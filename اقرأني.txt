@@ -1,34 +1,52 @@
-تعريب Well Dweller للعربية
-============================
+# Well Dweller - Arabic Translation Patch
 
-طريقة التركيب:
-1. أغلق اللعبة تماماً.
-2. شغّل ملف "تطبيق_التعريب.bat" (دبل كليك عليه).
-3. الصق مسار مجلد اللعبة (المجلد اللي فيه data.win)، مثال:
-   D:\SteamLibrary\steamapps\common\Well Dweller
-4. اضغط Enter وانتظر حتى تظهر رسالة "تم بنجاح".
-5. شغّل اللعبة واستمتع بالتعريب.
+This repository contains the **full source code** of the installer scripts used in the
+Arabic translation patch for the game "Well Dweller".
 
-لإلغاء التعريب والرجوع للإنجليزية:
-شغّل ملف "استعادة_الأصلي.bat" وألصق نفس مسار مجلد اللعبة.
+## What this patch does
 
-ملاحظة: لو ظهرت رسالة خطأ أثناء التطبيق، فمعناها نسخة اللعبة عندك مختلفة عن النسخة
-اللي صُنع لها هذا الباتش. في هذه الحالة تحقق من سلامة ملفات اللعبة عبر Steam
-(Properties > Installed Files > Verify integrity of game files) وجرّب مرة أخرى.
-ملفاتك الأصلية دائماً محفوظة في مجلد Arabic_Patch_Backup قبل أي تعديل.
+It applies a binary diff (using the open-source tool `xdelta3`) to the user's own
+legally-owned copy of `data.win` and `translations.ini`, translating all in-game text
+to Arabic. No copyrighted game files are distributed — only the binary difference
+(patch) between the original and the translated version.
 
-============================
-عن التعريب
-============================
+## Files in this repository
 
-تمت ترجمة اللعبة بالكامل للعربية من قبل: Katobee
+- `تطبيق_التعريب.bat` — Installer script (plain text, Windows Batch). Backs up the
+  user's original files, then applies the patch using `xdelta3.exe`.
+- `استعادة_الأصلي.bat` — Restore script (plain text, Windows Batch). Restores the
+  user's original backed-up files.
+- `اقرأني.txt` — Instructions for end users, written in Arabic.
 
-تابعوني على:
-- تيك توك: https://www.tiktok.com/@katobee5
-- يوتيوب: https://www.youtube.com/@katobee3
+Both `.bat` files are plain text and are not compiled — the content of this
+repository **is** their full source code, unmodified.
 
-هذا العمل تطوعي، صُنع بشغف لإثراء المحتوى العربي في عالم الألعاب.
-إذا أعجبتك الترجمة، شارك الباتش مع أصدقائك محبي اللعبة!
+## About xdelta3.exe
 
-جميع حقوق اللعبة الأصلية محفوظة لمطوّرها. هذا الباتش لا يحتوي على أي ملفات
-محمية بحقوق النشر، وهو مجرد فرق (patch) يُطبَّق على نسختك الشرعية من اللعبة.
+The only compiled binary included in the distributed package is `xdelta3.exe`,
+which is a well-known open-source binary diff/patch tool. It was **not modified
+in any way**; it is the exact official unmodified build.
+
+- Official source code and build instructions: https://github.com/jmacd/xdelta
+- Official releases page: https://github.com/jmacd/xdelta/releases
+- Exact release used in this patch: [xdelta3-3.2.2-windows-x86_64]
+
+Anyone can verify the binary included in the package matches the official release
+by comparing its SHA-256 hash with the one from the official GitHub release page.
+
+## How the patch files (.xdelta) were created
+
+The `.xdelta` patch files are not executable code — they are binary diff data
+generated with the following command:
+xdelta3.exe -e -9 -s original_data.win data_arabic_translated.win data_patch.xdelta
+xdelta3.exe -e -9 -s original_translations.ini translations_arabic_final.ini translations_patch.xdelta
+
+This simply records the byte-level differences between the original English files
+and the translated Arabic version, so it can be applied on top of a legitimately
+owned copy of the game.
+
+## Author
+
+Translated and packaged by Katobee
+- TikTok: https://www.tiktok.com/@katobee5
+- YouTube: https://www.youtube.com/@katobee3
